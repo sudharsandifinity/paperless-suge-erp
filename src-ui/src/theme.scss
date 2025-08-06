@@ -1,8 +1,8 @@
 @use "sass:color";
 @mixin paperless-green {
   // base color e.g. #17541f = hsl(128, 57%, 21%)
-  --pngx-primary: 128, 57%;
-  --pngx-primary-lightness: 21%;
+  --pngx-primary: 195, 100%;
+  --pngx-primary-lightness: 23%;
 }
 
 :root {

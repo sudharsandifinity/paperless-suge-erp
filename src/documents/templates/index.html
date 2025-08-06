@@ -5,16 +5,15 @@
 <html lang="en" data-bs-theme="auto">
 <head>
 	<meta charset="utf-8">
-	<title>Paperless-ngx</title>
+	<title>HLB-Sage</title>
 	<base href="{% url 'base' %}">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="cookie_prefix" content="{{cookie_prefix}}">
 	<meta name="robots" content="noindex,nofollow">
-	<meta name="author" content="The Paperless-ngx Team">
-	<link rel="icon" type="image/x-icon" href="favicon.ico">
-	<link rel="manifest" href="{% static webmanifest %}">
+	<meta name="author" content="The HLB-Sage Team">
+	<link rel="icon" href="{% static 'paperless/img/HLB-logo.png' %}">
 	<link rel="stylesheet" href="{% static styles_css %}">
-	<link rel="apple-touch-icon" href="{% static apple_touch_icon %}">
+	<link rel="apple-touch-icon" href="{% static 'paperless/img/HLB-logo.png' %}">
 </head>
 <body>
 	<pngx-root>
@@ -57,9 +56,9 @@
 		</style>
 		<div class="bg-light w-100 h-100 d-flex align-items-center">
 			<div class="app-loader align-self-center text-center mx-auto">
-				{% include "paperless-ngx/snippets/svg_logo.html" with extra_attrs="class='logo mb-2' height='6em'" %}
-				<h6 class="m-auto">{% translate "Paperless-ngx is loading..." %}</h6>
-				<p class="warning m-auto mt-3 small fade hide">{% translate "Still here?! Hmm, something might be wrong." %} <a href="https://docs.paperless-ngx.com">{% translate "Here's a link to the docs." %}</a></p>
+				<img src="{% static 'paperless/img/HLB-logo.svg' %}" class="logo mb-2" height="180" alt="Logo">
+				<h6 class="m-auto">{% translate "Application is loading..." %}</h6>
+				<p class="warning m-auto mt-3 small fade hide">{% translate "Still here?! Hmm, something might be wrong." %}</p>
 			</div>
 		</div>
 		<script type="text/javascript">{# Pass Django messages to Angular frontend #}

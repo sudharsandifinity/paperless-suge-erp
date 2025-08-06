@@ -5,13 +5,14 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta name="author" content="Paperless-ngx project and contributors">
+        <meta name="author" content="HLB-Sage project and contributors">
         <meta name="robots" content="noindex,nofollow">
 
         <title>
             {% block head_title %}
             {% endblock head_title %}
         </title>
+        <link rel="icon" type="image/png" href="{% static 'paperless/img/HLB-logo.png' %}">
         <link href="{% static 'bootstrap.min.css' %}" rel="stylesheet">
         <link href="{% static 'base.css' %}" rel="stylesheet">
     </head>
@@ -21,19 +22,18 @@
             <form class="form-accounts" id="form-account" method="post">
                 {% csrf_token %}
                 {% if not APP_LOGO and not APP_TITLE %}
-                    {% include "paperless-ngx/snippets/svg_logo.html" with extra_attrs="width='300' class='logo mb-4'" %}
+                    <img src="{% static 'paperless/img/HLB-logo.png' %}" width="180" class="logo mb-4" />
                 {% else %}
                     {% if APP_LOGO %}
                         <img src="{{APP_LOGO}}" width="300" class="logo mb-1" />
-                        <div class="d-flex flex-column align-items-end mb-4">
-                            <span class="byline text-uppercase font-monospace">by Paperless-ngx</span>
-                        </div>
+                        {% comment %} <div class="d-flex flex-column align-items-end mb-4">
+                            <span class="byline text-uppercase font-monospace">by HLB-Sage</span>
+                        </div> {% endcomment %}
                     {% else %}
                         <h1 class="font-weight-normal text-primary mb-1 d-flex justify-content-center align-items-start">
-                            {% include "paperless-ngx/snippets/svg_leaf.html" with extra_attrs="width='30' class='mt-2'" %}
+                            <img src="{% static 'paperless/img/HLB-logo.png' %}" class="mt-2" width="30" alt="Logo">
                             <div class="d-flex flex-column align-items-end mb-4">
                                 <span class="ms-2">{{ APP_TITLE }}</span>
-                                <span class="byline text-uppercase font-monospace">by Paperless-ngx</span>
                             </div>
                         </h1>
                     {% endif %}

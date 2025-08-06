@@ -2,9 +2,9 @@ body {
   --bs-body-bg: #f5f5f5;
   --bs-link-color-rgb: 23, 84, 31; /* #17541f */
   --bs-link-hover-color-rgb: 15, 56, 20;
-  --pngx-primary: #17541f;
-  --pngx-primary-hover: #0f3614;
-  --pngx-primary-active: #0c2c10;
+  --pngx-primary: #005a77;
+  --pngx-primary-hover: #04475d;
+  --pngx-primary-active: #014359;
 }
 
 .logo {

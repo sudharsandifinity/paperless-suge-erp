@@ -4,15 +4,15 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "HLB-logo.png",
       "sizes": "256x256"
     },
     {
-      "src": "assets/logo-notext.svg",
+      "src": "HLB-logo.png",
       "sizes": "any"
     }
   ],
-  "name": "Paperless-ngx",
-  "short_name": "Paperless-ngx",
+  "name": "HLB-Sage",
+  "short_name": "HLB-Sage",
   "start_url": "/"
 }

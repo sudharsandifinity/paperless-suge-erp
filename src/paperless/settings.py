@@ -339,6 +339,10 @@ INSTALLED_APPS = [
     *env_apps,
 ]
 
+print(DEBUG)
+DEBUG=True
+print(DEBUG)
+
 if DEBUG:
     INSTALLED_APPS.append("channels")
 
@@ -596,8 +600,8 @@ CORS_ALLOWED_ORIGINS = __get_list(
     "PAPERLESS_CORS_ALLOWED_HOSTS",
     ["http://localhost:8000"],
 )
-
 if DEBUG:
+    print('debug', DEBUG)
     # Allow access from the angular development server during debugging
     CORS_ALLOWED_ORIGINS.append("http://localhost:4200")
 
