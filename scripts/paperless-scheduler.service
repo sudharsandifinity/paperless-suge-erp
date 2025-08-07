@@ -3,10 +3,10 @@ Description=Paperless Celery Beat
 Requires=redis.service
 
 [Service]
-User=paperless
-Group=paperless
-WorkingDirectory=/opt/paperless/src
-ExecStart=celery --app paperless beat --loglevel INFO
+User=sudharsans
+#Group=paperless
+WorkingDirectory=/home/sudharsans/projects/hlb-sage-erp/src
+ExecStart=/home/sudharsans/projects/hlb-sage-erp/.venv/bin/celery --app paperless beat --loglevel INFO
 
 [Install]
 WantedBy=multi-user.target
