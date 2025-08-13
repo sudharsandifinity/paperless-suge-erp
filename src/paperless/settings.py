@@ -339,10 +339,6 @@ INSTALLED_APPS = [
     *env_apps,
 ]
 
-print(DEBUG)
-DEBUG=True
-print(DEBUG)
-
 if DEBUG:
     INSTALLED_APPS.append("channels")
 

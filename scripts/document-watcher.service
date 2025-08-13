@@ -1,0 +1,15 @@
+[Unit]
+Description=Document Folder Watcher
+After=network.target
+
+[Service]
+Type=simple
+ExecStart=/home/sudharsans/projects/hlb-sage-erp/watch_documents.sh
+Restart=always
+User=sudharsans
+#Environment=PATH=/usr/bin:/bin
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target
