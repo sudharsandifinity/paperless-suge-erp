@@ -3,8 +3,9 @@
 WATCH_FOLDER="/mnt/test"
 DEST_FOLDER="/opt/hlb-sage-erp/consume"
 
-inotifywait -m -r -e create -e moved_to -e close_write --format '%w%f %e' "$WATCH_FOLDER" |
-while read NEWFILE EVENT
+inotifywait -m -r -e create -e moved_to -e close_write --format '%w%f|%e' "$WATCH_FOLDER" |
+while IFS='|' read -r NEWFILE EVENT
+
 do
     echo "Detected event: $NEWFILE ($EVENT)" | systemd-cat -t document-watcher
 
@@ -56,7 +57,7 @@ do
         touch "$LOCK_FILE"
 
         if [ ! -f "$DEST_PATH" ]; then
-            cp "$NEWFILE" "$DEST_PATH"
+            mv "$NEWFILE" "$DEST_PATH"
             echo "Copied: $NEWFILE → $DEST_PATH" | systemd-cat -t document-watcher
         else
             echo "Skipped (already exists): $DEST_PATH" | systemd-cat -t document-watcher
