@@ -57,7 +57,7 @@ do
         touch "$LOCK_FILE"
 
         if [ ! -f "$DEST_PATH" ]; then
-            mv "$NEWFILE" "$DEST_PATH"
+            cp "$NEWFILE" "$DEST_PATH"
             echo "Copied: $NEWFILE → $DEST_PATH" | systemd-cat -t document-watcher
         else
             echo "Skipped (already exists): $DEST_PATH" | systemd-cat -t document-watcher
