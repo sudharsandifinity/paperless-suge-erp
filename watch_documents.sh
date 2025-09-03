@@ -36,7 +36,7 @@ do
         fi
         if [[ "$CURRENT_SIZE" == "$LAST_SIZE" && "$CURRENT_SIZE" -gt 0 ]]; then
             ((STABLE_COUNT++))
-            if [[ $STABLE_COUNT -ge 2 ]]; then
+            if [[ $STABLE_COUNT -ge 5 ]]; then
                 break
             fi
         else
