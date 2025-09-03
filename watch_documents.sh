@@ -2,32 +2,26 @@
 
 WATCH_FOLDER="/mnt/test"
 DEST_FOLDER="/opt/hlb-sage-erp/consume"
+DB="/opt/hlb-sage-erp/processed_files.db"
+
+# Initialize SQLite DB if not exists
+sqlite3 "$DB" <<EOF
+CREATE TABLE IF NOT EXISTS files (
+    hash TEXT PRIMARY KEY,
+    original_path TEXT,
+    saved_path TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+EOF
 
 inotifywait -m -r -e create -e moved_to -e close_write --format '%w%f|%e' "$WATCH_FOLDER" |
 while IFS='|' read -r NEWFILE EVENT
-
 do
     echo "Detected event: $NEWFILE ($EVENT)" | systemd-cat -t document-watcher
 
     # Skip directories
     if [ -d "$NEWFILE" ]; then
         echo "Skipping directory event: $NEWFILE" | systemd-cat -t document-watcher
-        continue
-    fi
-
-    BASENAME=$(basename "$NEWFILE")
-    LOCK_FILE="/tmp/.lock_${BASENAME}"
-    DEST_PATH="$DEST_FOLDER/$BASENAME"
-
-    # Skip if already copied
-    if [ -f "$DEST_PATH" ]; then
-        echo "Skipped (already exists): $DEST_PATH" | systemd-cat -t document-watcher
-        continue
-    fi
-
-    # Skip if already processing
-    if [ -f "$LOCK_FILE" ]; then
-        echo "Lock exists, skipping duplicate event for: $NEWFILE" | systemd-cat -t document-watcher
         continue
     fi
 
@@ -52,20 +46,36 @@ do
         sleep 1
     done
 
-    if [[ $STABLE_COUNT -ge 2 ]]; then
-        # Create lock now that file is stable
-        touch "$LOCK_FILE"
+    # Get relative path from WATCH_FOLDER
+    FILENAME=$(basename "$NEWFILE")
 
-        if [ ! -f "$DEST_PATH" ]; then
-            cp "$NEWFILE" "$DEST_PATH"
-            echo "Copied: $NEWFILE → $DEST_PATH" | systemd-cat -t document-watcher
-        else
-            echo "Skipped (already exists): $DEST_PATH" | systemd-cat -t document-watcher
-        fi
+    # Generate content hash
+    FILE_HASH=$(sha256sum "$NEWFILE" | awk '{print $1}')
+    EXT="${FILENAME##*.}"
+    BASE="${FILENAME%.*}"
+    FILENAME_HASHED="${BASE}_${FILE_HASH:0:12}.${EXT}"
+    DEST_PATH="$DEST_FOLDER/$FILENAME_HASHED"
 
-        # Clean up lock after processing
-        rm -f "$LOCK_FILE"
-    else
-        echo "File not stable or disappeared: $NEWFILE" | systemd-cat -t document-watcher
+    # Check if this hash is already in the database
+    if sqlite3 "$DB" "SELECT 1 FROM files WHERE hash = '$FILE_HASH' LIMIT 1;" | grep -q 1; then
+        echo "Skipped (duplicate content): $NEWFILE (hash=$FILE_HASH)" | systemd-cat -t document-watcher
+        continue
     fi
+
+    # Ensure destination folder exists
+    mkdir -p "$(dirname "$DEST_PATH")"
+
+    # Copy the file
+    cp "$NEWFILE" "$DEST_PATH"
+    if [ $? -eq 0 ]; then
+        echo "Copied: $NEWFILE → $DEST_PATH" | systemd-cat -t document-watcher
+        # Record in SQLite
+        sqlite3 "$DB" <<EOF
+INSERT INTO files (hash, original_path, saved_path)
+VALUES ('$FILE_HASH', '$NEWFILE', '$FILENAME_HASHED');
+EOF
+    else
+        echo "Error copying file: $NEWFILE" | systemd-cat -t document-watcher
+    fi
+
 done
