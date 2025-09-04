@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-WATCH_FOLDER="/mnt/test"
+WATCH_FOLDER="/mnt/documents"
 DEST_FOLDER="/opt/hlb-sage-erp/consume"
 DB="/opt/hlb-sage-erp/processed_files.db"
 
